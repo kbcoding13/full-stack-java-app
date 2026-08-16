@@ -17,10 +17,9 @@ services:
       retries: 10
 
   localstack:
-    image: localstack/localstack:latest
+    image: localstack/localstack:2026.07.4
     container_name: inventory-localstack
     environment:
-      SERVICES: s3
       DEBUG: 0
       AWS_DEFAULT_REGION: us-east-1
     ports:

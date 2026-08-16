@@ -26,8 +26,13 @@ public abstract class IntegrationTest {
 
     protected static final String TEST_BUCKET = "inventory-test";
 
+    /**
+     * Pinned rather than :latest so a LocalStack release cannot break CI overnight. S3 is a
+     * core community service and is available without restricting SERVICES — passing it made
+     * the container exit with code 55 on this image.
+     */
     static final LocalStackContainer LOCALSTACK =
-            new LocalStackContainer(DockerImageName.parse("localstack/localstack:latest")).withServices("s3");
+            new LocalStackContainer(DockerImageName.parse("localstack/localstack:2026.07.4"));
 
     static {
         LOCALSTACK.start();
