@@ -40,6 +40,20 @@ cd frontend && npm install && npm run dev
 Open http://localhost:5173. **The first account you register becomes `ADMIN`**; everyone after
 that is `STAFF`.
 
+### Demo data
+
+To start with a populated catalog instead of an empty one:
+
+```bash
+cd backend && ./gradlew bootRun --args='--spring.profiles.active=seed'
+```
+
+That creates seven products across three categories and two suppliers, signs in with
+`admin@example.com` / `staff@example.com` (password `password123`), and leaves one product below
+its reorder level so the low-stock filter has something to show. Opening balances are written as
+stock movements, not as a quantity column. It is idempotent per SKU and gated behind the `seed`
+profile, so it never runs in a real environment.
+
 The LocalStack container creates the `inventory-local` bucket and its CORS rules on startup via
 `infra/localstack/init/01-create-bucket.sh` — presigned browser uploads need that CORS policy.
 
@@ -59,6 +73,7 @@ S3 features (image upload, CSV import/export) still need LocalStack or real AWS 
 ```bash
 # backend (from /backend)
 ./gradlew bootRun
+./gradlew bootRun --args='--spring.profiles.active=seed'   # with demo data
 ./gradlew test          # unit tests + Testcontainers integration tests (needs Docker)
 ./gradlew build         # compile + test
 
