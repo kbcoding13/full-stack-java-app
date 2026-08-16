@@ -64,6 +64,8 @@ app:
     presign-ttl: PT15M
     max-image-bytes: 5242880
     allowed-image-types: image/jpeg,image/png,image/webp
+    max-attachment-bytes: 10485760
+    allowed-attachment-types: application/pdf,image/jpeg,image/png,text/csv,text/plain
 
 logging:
   level:

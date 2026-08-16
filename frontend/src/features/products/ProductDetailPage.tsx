@@ -5,6 +5,7 @@ import { useAuth } from '@/features/auth/useAuth'
 import { useMovements } from '@/features/stock/hooks'
 import { StockMovementDialog } from '@/features/stock/StockMovementDialog'
 import { ProductFormDialog } from './ProductFormDialog'
+import { ProductAttachments } from './ProductAttachments'
 import { ProductImages } from './ProductImages'
 import { useProduct } from './hooks'
 
@@ -79,6 +80,8 @@ export function ProductDetailPage() {
       )}
 
       <ProductImages productId={product.id} />
+
+      <ProductAttachments productId={product.id} />
 
       <Card className="p-0">
         <h2 className="border-b border-slate-200 px-4 py-3 text-sm font-semibold text-slate-900">

@@ -28,7 +28,10 @@ public record AppProperties(Cors cors, Jwt jwt, Storage storage) {
             @DefaultValue("false") boolean pathStyleAccess,
             @DefaultValue("PT15M") Duration presignTtl,
             @DefaultValue("5242880") long maxImageBytes,
-            @DefaultValue("image/jpeg,image/png,image/webp") List<String> allowedImageTypes) {
+            @DefaultValue("image/jpeg,image/png,image/webp") List<String> allowedImageTypes,
+            @DefaultValue("10485760") long maxAttachmentBytes,
+            @DefaultValue("application/pdf,image/jpeg,image/png,text/csv,text/plain")
+                    List<String> allowedAttachmentTypes) {
 
         /** Blank for real AWS; set to the LocalStack/MinIO URL locally. */
         public boolean hasCustomEndpoint() {

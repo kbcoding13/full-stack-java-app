@@ -1,5 +1,7 @@
 import { api, queryString, request } from './client'
 import type {
+  Attachment,
+  AttachmentEntityType,
   Category,
   CategoryRequest,
   ExportResult,
@@ -72,6 +74,20 @@ export const suppliersApi = {
   create: (body: SupplierRequest) => api.post<Supplier>('/suppliers', body),
   update: (id: number, body: SupplierRequest) => api.put<Supplier>(`/suppliers/${id}`, body),
   remove: (id: number) => api.delete<void>(`/suppliers/${id}`),
+}
+
+export const attachmentsApi = {
+  list: (entityType: AttachmentEntityType, entityId: number) =>
+    api.get<Attachment[]>(`/attachments${queryString({ entityType, entityId })}`),
+  /** Proxy upload — the backend checks content type and size before storing. */
+  upload: (entityType: AttachmentEntityType, entityId: number, file: File) => {
+    const form = new FormData()
+    form.append('file', file)
+    form.append('entityType', entityType)
+    form.append('entityId', String(entityId))
+    return request<Attachment>('/attachments', { method: 'POST', body: form })
+  },
+  remove: (id: number) => api.delete<void>(`/attachments/${id}`),
 }
 
 export const importExportApi = {

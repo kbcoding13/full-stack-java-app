@@ -130,6 +130,20 @@ export interface ProductImage {
   primary: boolean
 }
 
+export type AttachmentEntityType = 'PRODUCT' | 'STOCK_MOVEMENT' | 'SUPPLIER'
+
+export interface Attachment {
+  id: number
+  entityType: AttachmentEntityType
+  entityId: number
+  originalName: string | null
+  contentType: string | null
+  sizeBytes: number | null
+  downloadUrl: string
+  createdAt: string
+  createdBy: string | null
+}
+
 export interface ImportRowError {
   line: number
   sku: string | null

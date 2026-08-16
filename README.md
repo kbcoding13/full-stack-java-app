@@ -83,6 +83,9 @@ Everything environment-specific is bound through `AppProperties` (`app.*` in
 | `AWS_REGION` | `us-east-1` | |
 | `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Frontend origin |
 
+Upload limits are config too: `app.storage.max-image-bytes` / `allowed-image-types` for product
+images, and `max-attachment-bytes` / `allowed-attachment-types` for documents.
+
 Secrets belong in environment variables or a gitignored `application-local.yml` — never in
 `application.yml`.
 
@@ -115,6 +118,10 @@ DELETE /products/{id}/images/{imageId}
 
 POST   /imports/products           ADMIN — multipart CSV, upsert by SKU
 GET    /exports/inventory          generates CSV to S3, returns a presigned GET
+
+POST   /attachments                STAFF+ — multipart doc tied to a product/supplier/movement
+GET    /attachments                ?entityType&entityId — presigned GET URLs
+DELETE /attachments/{id}           ADMIN
 ```
 
 CSV import columns: `sku` and `name` are required; `description`, `category`, `supplier`,

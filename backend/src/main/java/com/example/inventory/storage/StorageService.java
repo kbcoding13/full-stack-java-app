@@ -162,6 +162,20 @@ public class StorageService {
         }
     }
 
+    public void validateAttachment(String contentType, long sizeBytes) {
+        if (sizeBytes > properties.maxAttachmentBytes()) {
+            throw new DomainRuleException(
+                    "Attachment exceeds the maximum size of %d bytes".formatted(properties.maxAttachmentBytes()));
+        }
+        if (contentType == null
+                || properties.allowedAttachmentTypes().stream()
+                        .noneMatch(allowed -> contentType.toLowerCase().startsWith(allowed))) {
+            throw new DomainRuleException(
+                    "Unsupported attachment type. Allowed: "
+                            + String.join(", ", properties.allowedAttachmentTypes()));
+        }
+    }
+
     public void validateImageSize(long sizeBytes) {
         if (sizeBytes > properties.maxImageBytes()) {
             throw new DomainRuleException("Image exceeds the maximum size of %d bytes".formatted(

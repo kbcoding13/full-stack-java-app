@@ -43,6 +43,7 @@ export const handlers = [
   http.get('/api/v1/products/:id', () => HttpResponse.json(testProduct)),
   http.get('/api/v1/products/:id/movements', () => HttpResponse.json(pageOf([]))),
   http.get('/api/v1/products/:id/images', () => HttpResponse.json([])),
+  http.get('/api/v1/attachments', () => HttpResponse.json([])),
   http.get('/api/v1/categories', () => HttpResponse.json(pageOf([testCategory]))),
   http.get('/api/v1/suppliers', () => HttpResponse.json(pageOf([]))),
 ]

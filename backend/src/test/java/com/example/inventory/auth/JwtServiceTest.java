@@ -26,7 +26,15 @@ class JwtServiceTest {
                 new AppProperties.Cors(List.of("http://localhost:5173")),
                 new AppProperties.Jwt(SECRET, "inventory-api", Duration.ofMinutes(15), Duration.ofDays(7)),
                 new AppProperties.Storage(
-                        "bucket", "us-east-1", "", true, Duration.ofMinutes(15), 5_242_880L, List.of()));
+                        "bucket",
+                        "us-east-1",
+                        "",
+                        true,
+                        Duration.ofMinutes(15),
+                        5_242_880L,
+                        List.of(),
+                        10_485_760L,
+                        List.of()));
 
         jwtService = new JwtService(properties);
         user = new User("user@example.com", "hash", "Test User", Role.STAFF);
@@ -88,7 +96,8 @@ class JwtServiceTest {
                         "inventory-api",
                         Duration.ofMinutes(15),
                         Duration.ofDays(7)),
-                new AppProperties.Storage("b", "us-east-1", "", true, Duration.ofMinutes(1), 1L, List.of()));
+                new AppProperties.Storage(
+                        "b", "us-east-1", "", true, Duration.ofMinutes(1), 1L, List.of(), 1L, List.of()));
 
         String foreignToken = new JwtService(other).issueAccessToken(user);
 
