@@ -97,8 +97,10 @@ class AttachmentIntegrationTest extends IntegrationTest {
     @Test
     @DisplayName("a soft-deleted product cannot take new attachments")
     void rejectsSoftDeletedOwner() {
+        // The entity is detached once @BeforeEach's transaction closes, so flush() alone would
+        // be a no-op — merge it back to actually persist deletedAt.
         product.softDelete();
-        productRepository.flush();
+        productRepository.saveAndFlush(product);
 
         assertThatThrownBy(() ->
                         attachmentService.upload(AttachmentEntityType.PRODUCT, product.getId(), pdf("late.pdf")))
