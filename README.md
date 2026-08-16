@@ -57,13 +57,30 @@ profile, so it never runs in a real environment.
 The LocalStack container creates the `inventory-local` bucket and its CORS rules on startup via
 `infra/localstack/init/01-create-bucket.sh` — presigned browser uploads need that CORS policy.
 
+### If a port is already taken
+
+A PostgreSQL server or another app already running locally will quietly shadow the container,
+and the failure looks like bad credentials rather than a port clash:
+
+```bash
+POSTGRES_PORT=5433 docker compose -f infra/docker-compose.yml up -d
+cd backend && ./gradlew bootRun --args='--spring.datasource.url=jdbc:postgresql://localhost:5433/inventory'
+
+# and if 8080 is taken
+cd backend && ./gradlew bootRun --args='--server.port=8081'
+cd frontend && VITE_API_TARGET=http://localhost:8081 npm run dev
+```
+
+Note that `./gradlew bootRun` forks from the Gradle daemon, which does not inherit environment
+variables set in your shell — pass overrides via `--args` rather than exporting them.
+
 ### Running without Docker
 
 If you already have PostgreSQL locally, point the backend at it and skip the Postgres container:
 
 ```bash
 createdb inventory
-DB_URL=jdbc:postgresql://localhost:5432/inventory DB_USERNAME=you DB_PASSWORD=secret ./gradlew bootRun
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/inventory   SPRING_DATASOURCE_USERNAME=you SPRING_DATASOURCE_PASSWORD=secret ./gradlew bootRun
 ```
 
 S3 features (image upload, CSV import/export) still need LocalStack or real AWS credentials.
@@ -91,7 +108,7 @@ Everything environment-specific is bound through `AppProperties` (`app.*` in
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `DB_URL` / `DB_USERNAME` / `DB_PASSWORD` | local Postgres | Datasource |
+| `SPRING_DATASOURCE_URL` / `_USERNAME` / `_PASSWORD` | local Postgres | Datasource |
 | `JWT_SECRET` | dev-only value | Base64 HMAC key — **must** be overridden outside local dev |
 | `S3_BUCKET` | `inventory-local` | Bucket name |
 | `S3_ENDPOINT` | `http://localhost:4566` | Blank to use real AWS |
