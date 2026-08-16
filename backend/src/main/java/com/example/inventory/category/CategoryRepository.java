@@ -11,6 +11,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Optional<Category> findByIdAndDeletedAtIsNull(Long id);
 
+    /** Used by the CSV importer, which creates categories on demand by name. */
+    Optional<Category> findFirstByNameIgnoreCaseAndDeletedAtIsNull(String name);
+
     @Query("""
             SELECT c FROM Category c
             WHERE c.deletedAt IS NULL

@@ -14,6 +14,7 @@ import {
 import { useCategories } from '@/features/categories/hooks'
 import { useAuth } from '@/features/auth/useAuth'
 import { useDeleteProduct, useProducts } from './hooks'
+import { ImportExportBar } from './ImportExportBar'
 import { ProductFormDialog } from './ProductFormDialog'
 
 export function ProductsPage() {
@@ -84,6 +85,8 @@ export function ProductsPage() {
           Low stock only
         </label>
       </Card>
+
+      <ImportExportBar />
 
       <ErrorMessage error={error} />
 

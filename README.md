@@ -112,7 +112,15 @@ GET    /products/{id}/images       presigned GET URLs
 POST   /products/{id}/images/presign   -> { uploadUrl, key } for direct browser PUT
 POST   /products/{id}/images/confirm   registers the key after upload
 DELETE /products/{id}/images/{imageId}
+
+POST   /imports/products           ADMIN — multipart CSV, upsert by SKU
+GET    /exports/inventory          generates CSV to S3, returns a presigned GET
 ```
+
+CSV import columns: `sku` and `name` are required; `description`, `category`, `supplier`,
+`unitPrice` and `reorderLevel` are optional. Categories and suppliers are created on demand by
+name. Rows are validated independently — a bad row is reported and skipped rather than failing
+the file. **An import never sets stock**; opening balances must be recorded as movements.
 
 Status codes: `404` missing, `409` conflict (duplicate SKU), `422` domain rule violation
 (e.g. an `OUT` that would drive stock negative).

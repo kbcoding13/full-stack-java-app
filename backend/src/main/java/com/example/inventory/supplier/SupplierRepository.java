@@ -11,6 +11,9 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
 
     Optional<Supplier> findByIdAndDeletedAtIsNull(Long id);
 
+    /** Used by the CSV importer, which creates suppliers on demand by name. */
+    Optional<Supplier> findFirstByNameIgnoreCaseAndDeletedAtIsNull(String name);
+
     @Query("""
             SELECT s FROM Supplier s
             WHERE s.deletedAt IS NULL

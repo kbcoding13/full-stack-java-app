@@ -130,6 +130,28 @@ export interface ProductImage {
   primary: boolean
 }
 
+export interface ImportRowError {
+  line: number
+  sku: string | null
+  message: string
+}
+
+export interface ImportResult {
+  objectKey: string
+  totalRows: number
+  created: number
+  updated: number
+  skipped: number
+  errors: ImportRowError[]
+}
+
+export interface ExportResult {
+  objectKey: string
+  downloadUrl: string
+  rowCount: number
+  expiresInSeconds: number
+}
+
 export interface PresignImageResponse {
   uploadUrl: string
   key: string

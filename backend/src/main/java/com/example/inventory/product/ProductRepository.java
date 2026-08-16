@@ -11,6 +11,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByIdAndDeletedAtIsNull(Long id);
 
+    /** Used by the CSV importer to decide between insert and update. */
+    Optional<Product> findBySkuIgnoreCaseAndDeletedAtIsNull(String sku);
+
     @Query("""
             SELECT COUNT(p) > 0 FROM Product p
             WHERE p.deletedAt IS NULL

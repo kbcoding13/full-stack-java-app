@@ -1,7 +1,9 @@
-import { api, queryString } from './client'
+import { api, queryString, request } from './client'
 import type {
   Category,
   CategoryRequest,
+  ExportResult,
+  ImportResult,
   Page,
   PresignImageResponse,
   Product,
@@ -70,6 +72,17 @@ export const suppliersApi = {
   create: (body: SupplierRequest) => api.post<Supplier>('/suppliers', body),
   update: (id: number, body: SupplierRequest) => api.put<Supplier>(`/suppliers/${id}`, body),
   remove: (id: number) => api.delete<void>(`/suppliers/${id}`),
+}
+
+export const importExportApi = {
+  /** Proxy upload — the backend validates and parses the CSV before trusting it. */
+  importProducts: (file: File) => {
+    const form = new FormData()
+    form.append('file', file)
+    return request<ImportResult>('/imports/products', { method: 'POST', body: form })
+  },
+  /** Returns a presigned URL; the CSV bytes never travel back through the API. */
+  exportInventory: () => api.get<ExportResult>('/exports/inventory'),
 }
 
 export const stockApi = {
