@@ -27,12 +27,14 @@ public abstract class IntegrationTest {
     protected static final String TEST_BUCKET = "inventory-test";
 
     /**
-     * Pinned rather than :latest so a LocalStack release cannot break CI overnight. S3 is a
-     * core community service and is available without restricting SERVICES — passing it made
-     * the container exit with code 55 on this image.
+     * Pinned to the last 4.x release on purpose. From the 2026.x CalVer images onward LocalStack
+     * requires a LOCALSTACK_AUTH_TOKEN, and without one the container fails license activation
+     * and exits with code 55 before it ever logs "Ready." — which surfaces here as an opaque
+     * wait-strategy timeout. 4.14.0 needs no token. If this is ever bumped to a 2026.x image,
+     * a token has to be supplied as a CI secret at the same time.
      */
     static final LocalStackContainer LOCALSTACK =
-            new LocalStackContainer(DockerImageName.parse("localstack/localstack:2026.07.4"));
+            new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.14.0"));
 
     static {
         LOCALSTACK.start();

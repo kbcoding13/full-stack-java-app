@@ -17,7 +17,9 @@ services:
       retries: 10
 
   localstack:
-    image: localstack/localstack:2026.07.4
+    # Last release before LocalStack began requiring LOCALSTACK_AUTH_TOKEN; a 2026.x image
+    # exits with code 55 on license activation unless a token is supplied.
+    image: localstack/localstack:4.14.0
     container_name: inventory-localstack
     environment:
       DEBUG: 0
