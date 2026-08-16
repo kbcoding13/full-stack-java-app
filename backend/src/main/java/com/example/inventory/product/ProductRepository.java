@@ -18,7 +18,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             SELECT COUNT(p) > 0 FROM Product p
             WHERE p.deletedAt IS NULL
               AND UPPER(p.sku) = UPPER(:sku)
-              AND (:excludeId IS NULL OR p.id <> :excludeId)
+              AND (CAST(:excludeId AS Long) IS NULL OR p.id <> :excludeId)
             """)
     boolean existsBySku(@Param("sku") String sku, @Param("excludeId") Long excludeId);
 
@@ -34,11 +34,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                     LEFT JOIN p.supplier s
                     LEFT JOIN ProductStock st ON st.productId = p.id
                     WHERE p.deletedAt IS NULL
-                      AND (:search IS NULL
-                           OR LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%'))
-                           OR UPPER(p.sku) LIKE UPPER(CONCAT('%', :search, '%')))
-                      AND (:categoryId IS NULL OR c.id = :categoryId)
-                      AND (:supplierId IS NULL OR s.id = :supplierId)
+                      AND (CAST(:search AS String) IS NULL
+                           OR LOWER(p.name) LIKE LOWER(CONCAT('%', CAST(:search AS String), '%'))
+                           OR UPPER(p.sku) LIKE UPPER(CONCAT('%', CAST(:search AS String), '%')))
+                      AND (CAST(:categoryId AS Long) IS NULL OR c.id = :categoryId)
+                      AND (CAST(:supplierId AS Long) IS NULL OR s.id = :supplierId)
                       AND (:lowStock = FALSE OR COALESCE(st.quantity, 0) <= p.reorderLevel)
                     """,
             countQuery = """
@@ -48,11 +48,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                     LEFT JOIN p.supplier s
                     LEFT JOIN ProductStock st ON st.productId = p.id
                     WHERE p.deletedAt IS NULL
-                      AND (:search IS NULL
-                           OR LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%'))
-                           OR UPPER(p.sku) LIKE UPPER(CONCAT('%', :search, '%')))
-                      AND (:categoryId IS NULL OR c.id = :categoryId)
-                      AND (:supplierId IS NULL OR s.id = :supplierId)
+                      AND (CAST(:search AS String) IS NULL
+                           OR LOWER(p.name) LIKE LOWER(CONCAT('%', CAST(:search AS String), '%'))
+                           OR UPPER(p.sku) LIKE UPPER(CONCAT('%', CAST(:search AS String), '%')))
+                      AND (CAST(:categoryId AS Long) IS NULL OR c.id = :categoryId)
+                      AND (CAST(:supplierId AS Long) IS NULL OR s.id = :supplierId)
                       AND (:lowStock = FALSE OR COALESCE(st.quantity, 0) <= p.reorderLevel)
                     """)
     Page<ProductRow> search(

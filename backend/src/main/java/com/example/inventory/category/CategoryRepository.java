@@ -17,7 +17,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("""
             SELECT c FROM Category c
             WHERE c.deletedAt IS NULL
-              AND (:search IS NULL OR LOWER(c.name) LIKE LOWER(CONCAT('%', :search, '%')))
+              AND (CAST(:search AS String) IS NULL
+                   OR LOWER(c.name) LIKE LOWER(CONCAT('%', CAST(:search AS String), '%')))
             """)
     Page<Category> search(@Param("search") String search, Pageable pageable);
 
@@ -25,7 +26,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             SELECT COUNT(c) > 0 FROM Category c
             WHERE c.deletedAt IS NULL
               AND LOWER(c.name) = LOWER(:name)
-              AND (:excludeId IS NULL OR c.id <> :excludeId)
+              AND (CAST(:excludeId AS Long) IS NULL OR c.id <> :excludeId)
             """)
     boolean existsByNameIgnoreCase(@Param("name") String name, @Param("excludeId") Long excludeId);
 }

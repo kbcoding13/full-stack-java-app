@@ -52,11 +52,15 @@ class ImportExportIntegrationTest extends IntegrationTest {
         assertThat(result.created()).isEqualTo(2);
         assertThat(result.errors()).isEmpty();
 
+        // Read back through the projection rather than the entity: category and supplier are
+        // lazy associations and this assertion runs outside the import's transaction.
         var hammer = productRepository.findBySkuIgnoreCaseAndDeletedAtIsNull("IMP-001").orElseThrow();
-        assertThat(hammer.getName()).isEqualTo("Hammer");
-        assertThat(hammer.getReorderLevel()).isEqualTo(4);
-        assertThat(hammer.getCategory().getName()).isEqualTo("Tools");
-        assertThat(hammer.getSupplier().getName()).isEqualTo("Acme");
+        var row = productRepository.findRowById(hammer.getId()).orElseThrow();
+
+        assertThat(row.name()).isEqualTo("Hammer");
+        assertThat(row.reorderLevel()).isEqualTo(4);
+        assertThat(row.categoryName()).isEqualTo("Tools");
+        assertThat(row.supplierName()).isEqualTo("Acme");
     }
 
     @Test
