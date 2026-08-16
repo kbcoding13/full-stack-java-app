@@ -61,7 +61,7 @@ export function StockMovementDialog({ product, onClose }: { product: Product; on
           {product.name} · currently {product.quantityOnHand} on hand
         </p>
 
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} noValidate className="space-y-4">
           <Field label="Type" error={errors.type?.message}>
             <Select {...register('type')}>
               <option value="IN">Stock in</option>

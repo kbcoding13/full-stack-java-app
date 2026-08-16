@@ -41,7 +41,7 @@ export function RegisterPage() {
         <h1 className="text-xl font-semibold text-slate-900">Create account</h1>
         <p className="mt-1 mb-6 text-sm text-slate-500">The first account created becomes an admin.</p>
 
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} noValidate className="space-y-4">
           <Field label="Full name" error={errors.fullName?.message}>
             <Input autoComplete="name" {...register('fullName')} />
           </Field>

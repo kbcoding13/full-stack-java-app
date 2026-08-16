@@ -140,7 +140,7 @@ function CategoryDialog({ category, onClose }: { category?: Category; onClose: (
           {category ? 'Edit category' : 'New category'}
         </h2>
 
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} noValidate className="space-y-4">
           <Field label="Name" error={errors.name?.message}>
             <Input {...register('name')} />
           </Field>

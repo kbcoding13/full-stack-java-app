@@ -85,7 +85,7 @@ export function ProductFormDialog({ product, onClose }: { product?: Product; onC
           {isEdit ? 'Edit product' : 'New product'}
         </h2>
 
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} noValidate className="space-y-4">
           <Field label="SKU" error={errors.sku?.message}>
             <Input {...register('sku')} />
           </Field>

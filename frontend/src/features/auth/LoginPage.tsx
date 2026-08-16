@@ -39,7 +39,7 @@ export function LoginPage() {
       <Card className="w-full max-w-sm">
         <h1 className="mb-6 text-xl font-semibold text-slate-900">Sign in</h1>
 
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} noValidate className="space-y-4">
           <Field label="Email" error={errors.email?.message}>
             <Input type="email" autoComplete="email" {...register('email')} />
           </Field>
