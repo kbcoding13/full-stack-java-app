@@ -1,0 +1,13 @@
+# Normalise line endings so Windows and CI agree on file contents.
+* text=auto eol=lf
+
+# Windows-only scripts must keep CRLF to run correctly.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary
+*.jar binary
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
