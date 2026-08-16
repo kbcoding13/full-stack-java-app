@@ -112,7 +112,7 @@ public class StockMovementService {
         return switch (request.type()) {
             case IN -> magnitude;
             case OUT -> -magnitude;
-            case ADJUST -> request.decrease() ? -magnitude : magnitude;
+            case ADJUST -> Boolean.TRUE.equals(request.decrease()) ? -magnitude : magnitude;
         };
     }
 

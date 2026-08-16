@@ -11,13 +11,16 @@ public final class StockDtos {
 
     /**
      * Quantity is always entered as a positive number; {@code type} decides the sign.
-     * For ADJUST, use {@code direction} to say whether the correction adds or removes.
+     * For ADJUST, {@code decrease} says whether the correction adds or removes.
+     *
+     * <p>{@code decrease} is boxed so an omitted field means "no", rather than failing
+     * deserialisation — Jackson refuses to map a missing value onto a primitive.
      */
     public record StockMovementRequest(
             @NotNull Long productId,
             @NotNull MovementType type,
             @NotNull @Min(1) Integer quantity,
-            boolean decrease,
+            Boolean decrease,
             @Size(max = 255) String reason,
             @Size(max = 120) String reference,
             Instant occurredAt) {}

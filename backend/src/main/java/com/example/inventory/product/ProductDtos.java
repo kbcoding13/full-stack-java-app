@@ -66,8 +66,9 @@ public final class ProductDtos {
 
     public record PresignImageResponse(String uploadUrl, String key, long expiresInSeconds) {}
 
+    /** {@code makePrimary} is boxed so an omitted field means "no" instead of a 500. */
     public record ConfirmImageRequest(
-            @NotBlank String key, String contentType, Long sizeBytes, boolean makePrimary) {}
+            @NotBlank String key, String contentType, Long sizeBytes, Boolean makePrimary) {}
 
     public record ProductImageResponse(
             Long id, String key, String downloadUrl, String contentType, Long sizeBytes, boolean primary) {}

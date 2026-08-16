@@ -43,6 +43,12 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/actuator/health", "/actuator/health/**")
                         .permitAll()
+                        // A denial calls sendError, which re-dispatches through this chain to
+                        // /error. OncePerRequestFilter skips ERROR dispatches, so the request
+                        // arrives anonymous — without this the real 403 or 422 is overwritten by
+                        // a bodyless 401.
+                        .requestMatchers("/error")
+                        .permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**")
                         .permitAll()
                         // Catalog writes are ADMIN-only; @PreAuthorize on the services enforces

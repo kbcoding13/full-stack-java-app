@@ -70,7 +70,8 @@ public class ProductImageService {
             throw new ConflictException("That image has already been registered");
         }
 
-        boolean makePrimary = request.makePrimary() || imageRepository.countByProductId(productId) == 0;
+        boolean makePrimary =
+                Boolean.TRUE.equals(request.makePrimary()) || imageRepository.countByProductId(productId) == 0;
         if (makePrimary) {
             imageRepository.clearPrimaryFor(productId);
         }

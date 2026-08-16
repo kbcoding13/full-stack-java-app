@@ -33,7 +33,7 @@ public abstract class IntegrationTest {
      * wait-strategy timeout. 4.14.0 needs no token. If this is ever bumped to a 2026.x image,
      * a token has to be supplied as a CI secret at the same time.
      */
-    static final LocalStackContainer LOCALSTACK =
+    public static final LocalStackContainer LOCALSTACK =
             new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.14.0"));
 
     static {

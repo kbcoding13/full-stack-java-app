@@ -7,7 +7,9 @@ services:
       POSTGRES_USER: inventory
       POSTGRES_PASSWORD: inventory
     ports:
-      - "5432:5432"
+      # Override POSTGRES_PORT if you already run PostgreSQL on 5432 locally — otherwise the
+      # host port silently resolves to that instance and the app fails to authenticate.
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -25,7 +27,7 @@ services:
       DEBUG: 0
       AWS_DEFAULT_REGION: us-east-1
     ports:
-      - "4566:4566"
+      - "${LOCALSTACK_PORT:-4566}:4566"
     volumes:
       - localstack-data:/var/lib/localstack
       - ./localstack/init:/etc/localstack/init/ready.d
